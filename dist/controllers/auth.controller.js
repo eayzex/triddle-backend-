@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,11 +17,11 @@ const generateToken = (id) => {
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
-const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         // Check if user already exists
-        const userExists = yield User_1.default.findOne({ email });
+        const userExists = await User_1.default.findOne({ email });
         if (userExists) {
             return res.status(400).json({
                 success: false,
@@ -38,7 +29,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // Create user
-        const user = yield User_1.default.create({
+        const user = await User_1.default.create({
             name,
             email,
             password,
@@ -63,16 +54,16 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "Server error",
         });
     }
-});
+};
 exports.register = register;
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
-const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         // Check for user
-        const user = yield User_1.default.findOne({ email }).select("+password");
+        const user = await User_1.default.findOne({ email }).select("+password");
         if (!user) {
             return res.status(401).json({
                 success: false,
@@ -80,7 +71,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         // Check if password matches
-        const isMatch = yield user.comparePassword(password);
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
@@ -107,21 +98,21 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "Server error",
         });
     }
-});
+};
 exports.login = login;
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
-const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getMe = async (req, res) => {
     try {
-        const user = yield User_1.default.findById(req.user.id);
+        const user = await User_1.default.findById(req.user.id);
         res.status(200).json({
             success: true,
             user: {
-                id: user === null || user === void 0 ? void 0 : user._id,
-                name: user === null || user === void 0 ? void 0 : user.name,
-                email: user === null || user === void 0 ? void 0 : user.email,
-                createdAt: user === null || user === void 0 ? void 0 : user.createdAt,
+                id: user?._id,
+                name: user?.name,
+                email: user?.email,
+                createdAt: user?.createdAt,
             },
         });
     }
@@ -132,5 +123,5 @@ const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "Server error",
         });
     }
-});
+};
 exports.getMe = getMe;
