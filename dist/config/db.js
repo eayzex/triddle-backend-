@@ -16,13 +16,10 @@ exports.connectDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const MONGODB_URI = process.env.MONGODB_URI ;
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        connect = yield mongoose_1.default.connect(MONGODB_URI);
-        if (connect) {
+        yield mongoose_1.default.connect("mongodb+srv://eeexxeee666:dell2021@cluster0.kmwp8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
         console.log("MongoDB connected successfully");
-        }
     }
     catch (error) {
         console.error("MongoDB connection error:", error);
