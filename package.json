@@ -2,11 +2,12 @@
   "name": "triddle-backend",
   "version": "1.0.0",
   "description": "Backend for Triddle form builder application",
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
-    "build": "tsc"
+    "dev2": "nodemon src/server.ts",
+    "build": "tsc",
+    "vercel-build": "tsc"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -27,5 +28,8 @@
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
